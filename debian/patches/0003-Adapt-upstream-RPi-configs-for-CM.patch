@@ -1,0 +1,131 @@
+From: Tomaz Solc <tomaz.solc@tablix.org>
+Date: Wed, 6 Jul 2016 12:39:05 +0200
+Subject: Adapt upstream RPi configs for CM
+
+---
+ tcl/interface/raspberrypi-native.cfg    | 33 ---------------------------------
+ tcl/interface/rpi-cm-sysfs.cfg          | 17 +++++++++++++++++
+ tcl/interface/rpi-cm.cfg                | 21 +++++++++++++++++++++
+ tcl/interface/sysfsgpio-raspberrypi.cfg | 21 ---------------------
+ 4 files changed, 38 insertions(+), 54 deletions(-)
+ delete mode 100644 tcl/interface/raspberrypi-native.cfg
+ create mode 100644 tcl/interface/rpi-cm-sysfs.cfg
+ create mode 100644 tcl/interface/rpi-cm.cfg
+ delete mode 100644 tcl/interface/sysfsgpio-raspberrypi.cfg
+
+diff --git a/tcl/interface/raspberrypi-native.cfg b/tcl/interface/raspberrypi-native.cfg
+deleted file mode 100644
+index 058d80b..0000000
+--- a/tcl/interface/raspberrypi-native.cfg
++++ /dev/null
+@@ -1,33 +0,0 @@
+-#
+-# Config for using Raspberry Pi's expansion header
+-#
+-# This is best used with a fast enough buffer but also
+-# is suitable for direct connection if the target voltage
+-# matches RPi's 3.3V and the cable is short enough.
+-#
+-# Do not forget the GND connection, pin 6 of the expansion header.
+-#
+-
+-interface bcm2835gpio
+-
+-# Transition delay calculation: SPEED_COEFF/khz - SPEED_OFFSET
+-# These depend on system clock, calibrated for stock 700MHz
+-# bcm2835gpio_speed SPEED_COEFF SPEED_OFFSET
+-bcm2835gpio_speed_coeffs 113714 28
+-
+-# Each of the JTAG lines need a gpio number set: tck tms tdi tdo
+-# Header pin numbers: 23 22 19 21
+-bcm2835gpio_jtag_nums 11 25 10 9
+-
+-# If you define trst or srst, use appropriate reset_config
+-# Header pin numbers: TRST - 26, SRST - 18
+-
+-# bcm2835gpio_trst_num 7
+-# reset_config trst_only
+-
+-# bcm2835gpio_srst_num 24
+-# reset_config srst_only srst_push_pull
+-
+-# or if you have both connected,
+-# reset_config trst_and_srst srst_push_pull
+-
+diff --git a/tcl/interface/rpi-cm-sysfs.cfg b/tcl/interface/rpi-cm-sysfs.cfg
+new file mode 100644
+index 0000000..a0102f0
+--- /dev/null
++++ b/tcl/interface/rpi-cm-sysfs.cfg
+@@ -0,0 +1,17 @@
++# Config for using GPIOs on Raspberry Pi Compute Module
++#
++# Uses sysfs access to GPIO registers - user must be member of "gpio" group and
++# pins must be exported by the systemd service.
++
++interface sysfsgpio
++
++# Each of the JTAG lines need a gpio number set: tck tms tdi tdo
++# J5 pins on IO PCB:23 51 21 19
++sysfsgpio_jtag_nums 11 25 10 9
++
++# SRST is connected to NRST pin on stm32f1
++# J5 pin numbers: TRST - 15, SRST - 49
++sysfsgpio_trst_num 7
++sysfsgpio_srst_num 24
++
++reset_config trst_and_srst
+diff --git a/tcl/interface/rpi-cm.cfg b/tcl/interface/rpi-cm.cfg
+new file mode 100644
+index 0000000..56b6079
+--- /dev/null
++++ b/tcl/interface/rpi-cm.cfg
+@@ -0,0 +1,21 @@
++# Config for using GPIOs on Raspberry Pi Compute Module
++#
++# Uses direct access to GPIO registers - requires root
++
++interface bcm2835gpio
++
++# Transition delay calculation: SPEED_COEFF/khz - SPEED_OFFSET
++# These depend on system clock, calibrated for stock 700MHz
++# bcm2835gpio_speed SPEED_COEFF SPEED_OFFSET
++bcm2835gpio_speed_coeffs 113714 28
++
++# Each of the JTAG lines need a gpio number set: tck tms tdi tdo
++# J5 pins on IO PCB:  23 51 21 19
++bcm2835gpio_jtag_nums 11 25 10 9
++
++# SRST is connected to NRST pin on stm32f1
++# J5 pin numbers: TRST - 15, SRST - 49
++bcm2835gpio_trst_num 7
++bcm2835gpio_srst_num 24
++
++reset_config trst_and_srst
+diff --git a/tcl/interface/sysfsgpio-raspberrypi.cfg b/tcl/interface/sysfsgpio-raspberrypi.cfg
+deleted file mode 100644
+index 3636422..0000000
+--- a/tcl/interface/sysfsgpio-raspberrypi.cfg
++++ /dev/null
+@@ -1,21 +0,0 @@
+-#
+-# Config for using RaspberryPi's expansion header
+-#
+-# This is best used with a fast enough buffer but also
+-# is suitable for direct connection if the target voltage
+-# matches RPi's 3.3V
+-#
+-# Do not forget the GND connection, pin 6 of the expansion header.
+-#
+-
+-interface sysfsgpio
+-
+-# Each of the JTAG lines need a gpio number set: tck tms tdi tdo
+-# Header pin numbers: 23 22 19 21
+-sysfsgpio_jtag_nums 11 25 10 9
+-
+-# At least one of srst or trst needs to be specified
+-# Header pin numbers: TRST - 26, SRST - 18
+-sysfsgpio_trst_num 7
+-# sysfsgpio_srst_num 24
+-

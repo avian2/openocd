@@ -1,0 +1,41 @@
+From: Tomaz Solc <tomaz.solc@tablix.org>
+Date: Wed, 6 Jul 2016 12:25:49 +0200
+Subject: sysfsgpio: expect pins to persistently exported.
+
+Don't attempt to export or unexport GPIO pins in openocd sysfsgpio driver at
+all.
+---
+ src/jtag/drivers/sysfsgpio.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
+
+diff --git a/src/jtag/drivers/sysfsgpio.c b/src/jtag/drivers/sysfsgpio.c
+index dfb4dcb..42757e9 100644
+--- a/src/jtag/drivers/sysfsgpio.c
++++ b/src/jtag/drivers/sysfsgpio.c
+@@ -87,15 +87,9 @@ static int open_write_close(const char *name, const char *valstr)
+  */
+ static void unexport_sysfs_gpio(int gpio)
+ {
+-	char gpiostr[4];
+-
+ 	if (!is_gpio_valid(gpio))
+ 		return;
+ 
+-	snprintf(gpiostr, sizeof(gpiostr), "%d", gpio);
+-	if (open_write_close("/sys/class/gpio/unexport", gpiostr) < 0)
+-		LOG_ERROR("Couldn't unexport gpio %d", gpio);
+-
+ 	return;
+ }
+ 
+@@ -121,9 +115,8 @@ static int setup_sysfs_gpio(int gpio, int is_output, int init_high)
+ 	ret = open_write_close("/sys/class/gpio/export", gpiostr);
+ 	if (ret < 0) {
+ 		if (errno == EBUSY) {
+-			LOG_WARNING("gpio %d is already exported", gpio);
+ 		} else {
+-			LOG_ERROR("Couldn't export gpio %d", gpio);
++			LOG_ERROR("Couldn't export gpio %d (but it should already be exported)", gpio);
+ 			perror("sysfsgpio: ");
+ 			return ERROR_FAIL;
+ 		}
