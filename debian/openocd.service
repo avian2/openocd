@@ -1,0 +1,13 @@
+[Unit]
+Description=OpenOCD sysfs GPIO setup
+Requires=systemd-udevd.service
+After=systemd-udevd.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/sh -c 'for n in 7 9 10 11 24 25; do echo $n > /sys/class/gpio/export; done'
+ExecStop=/bin/sh -c 'for n in 7 9 10 11 24 25; do echo $n > /sys/class/gpio/unexport; done'
+
+[Install]
+WantedBy=multi-user.target
