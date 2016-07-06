@@ -30,6 +30,7 @@ DEB_CONFIGURE_EXTRA_FLAGS := \
 	--enable-opendous \
 	--enable-remote-bitbang \
         --enable-bcm2835gpio \
+	--enable-sysfsgpio \
 
 
 configure_flags_parport := \
