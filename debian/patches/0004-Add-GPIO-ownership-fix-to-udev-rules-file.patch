@@ -1,0 +1,26 @@
+From: Tomaz Solc <tomaz.solc@tablix.org>
+Date: Tue, 11 Oct 2016 10:49:18 +0000
+Subject: Add GPIO ownership fix to udev rules file.
+
+---
+ contrib/99-openocd.rules | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/contrib/99-openocd.rules b/contrib/99-openocd.rules
+index acdfade..faa5975 100644
+--- a/contrib/99-openocd.rules
++++ b/contrib/99-openocd.rules
+@@ -1,5 +1,13 @@
+ # Copy this file to /etc/udev/rules.d/
+ 
++# Change ownership of GPIO pins on Beagle Bone Black, so that OpenOCD can be
++# used by members of the "gpio" group without root access.
++SUBSYSTEM=="gpio*", PROGRAM="/bin/sh -c '\
++        chown -R root:gpio /sys/class/gpio && chmod -R 770 /sys/class/gpio;\
++        chown -R root:gpio /sys/devices/virtual/gpio && chmod -R 770 /sys/devices/virtual/gpio;\
++        chown -R root:gpio /sys$devpath && chmod -R 770 /sys$devpath\
++'"
++
+ ACTION!="add|change", GOTO="openocd_rules_end"
+ SUBSYSTEM!="usb|tty|hidraw", GOTO="openocd_rules_end"
+ 

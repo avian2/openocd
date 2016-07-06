@@ -1,0 +1,32 @@
+From: Tomaz Solc <tomaz.solc@tablix.org>
+Date: Tue, 11 Oct 2016 10:40:29 +0000
+Subject: Add sysfsgpio-bone.cfg for Beagle Bone Black
+
+---
+ tcl/interface/sysfsgpio-bone.cfg | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+ create mode 100644 tcl/interface/sysfsgpio-bone.cfg
+
+diff --git a/tcl/interface/sysfsgpio-bone.cfg b/tcl/interface/sysfsgpio-bone.cfg
+new file mode 100644
+index 0000000..6fcbcde
+--- /dev/null
++++ b/tcl/interface/sysfsgpio-bone.cfg
+@@ -0,0 +1,17 @@
++# Config for using GPIOs on Beagle Bone Black
++#
++# Uses sysfs access to GPIO registers - user must be member of "gpio" group and
++# pins must already be exported.
++
++interface sysfsgpio
++
++# Each of the JTAG lines need a gpio number set: tck tms tdi tdo
++# J9 header pins: 14 13 12 15
++sysfsgpio_jtag_nums 50 31 60 48 
++
++# SRST is connected to NRST pin on stm32f1
++# J9 header pin numbers: TRST - 11, SRST - 16
++sysfsgpio_trst_num 30
++sysfsgpio_srst_num 51
++
++reset_config trst_and_srst

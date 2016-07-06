@@ -1,2 +1,4 @@
-#Patch-file list
-remove-ft2232-config.patch
+0001-tcl-board-fix-all-the-remaining-boards-that-were-sou.patch
+0002-sysfsgpio-expect-pins-to-persistently-exported.patch
+0003-Add-sysfsgpio-bone.cfg-for-Beagle-Bone-Black.patch
+0004-Add-GPIO-ownership-fix-to-udev-rules-file.patch
