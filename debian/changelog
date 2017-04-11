@@ -1,4 +1,10 @@
-openocd (0.8.0-4tomaz-bbblack-1) UNRELEASED; urgency=medium
+openocd (0.8.0-4tomaz-bbblack-2) unstable; urgency=medium
+
+  * Add systemd unit for exporting GPIO pins on boot.
+
+ -- Tomaž Šolc <tomaz.solc@tablix.org>  Tue, 11 Apr 2017 10:40:21 +0200
+
+openocd (0.8.0-4tomaz-bbblack-1) unstable; urgency=medium
 
   * Modifications for running OpenOCD on Beagle Bone Black.
 
