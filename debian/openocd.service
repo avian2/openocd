@@ -6,8 +6,8 @@ After=systemd-udevd.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/bin/sh -c 'for n in 30 31 50 51 48 60; do echo $n > /sys/class/gpio/export; done'
-ExecStop=/bin/sh -c 'for n in 30 31 50 51 48 60; do echo $n > /sys/class/gpio/unexport; done'
+ExecStart=/bin/sh -c 'for n in 23 48 66 67 68 69; do echo $n > /sys/class/gpio/export; done'
+ExecStop=/bin/sh -c 'for n in 23 48 66 67 68 69; do echo $n > /sys/class/gpio/unexport; done'
 
 [Install]
 WantedBy=multi-user.target
