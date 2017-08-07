@@ -2,3 +2,4 @@
 0002-sysfsgpio-expect-pins-to-persistently-exported.patch
 0003-Add-sysfsgpio-bone.cfg-for-Beagle-Bone-Black.patch
 0004-Add-GPIO-ownership-fix-to-udev-rules-file.patch
+0005-Add-sysfsgpio-lgtc.cfg-for-SNA-LGTC.patch

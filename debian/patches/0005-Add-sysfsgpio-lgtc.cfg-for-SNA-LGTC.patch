@@ -1,0 +1,33 @@
+From: Tomaz Solc <tomaz.solc@tablix.org>
+Date: Mon, 7 Aug 2017 13:43:30 +0000
+Subject: Add sysfsgpio-lgtc.cfg for SNA-LGTC
+
+---
+ tcl/interface/sysfsgpio-lgtc.cfg | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+ create mode 100644 tcl/interface/sysfsgpio-lgtc.cfg
+
+diff --git a/tcl/interface/sysfsgpio-lgtc.cfg b/tcl/interface/sysfsgpio-lgtc.cfg
+new file mode 100644
+index 0000000..498a776
+--- /dev/null
++++ b/tcl/interface/sysfsgpio-lgtc.cfg
+@@ -0,0 +1,18 @@
++# Config for using GPIOs on SNA-LGTC
++# (the Beagle Bone Core-based system for Log-a-tec 3.0)
++#
++# Uses sysfs access to GPIO registers - user must be member of "gpio" group and
++# pins must already be exported.
++
++interface sysfsgpio
++
++# Each of the JTAG lines need a gpio number set: tck tms tdi tdo
++# BCM1 BGA pins: 149 155 150 139
++sysfsgpio_jtag_nums 69 23 68 48 
++
++# SRST is connected to NRST pin on stm32f1
++# BCM1 BGA pins: TRST - 151, SRST - 148
++sysfsgpio_trst_num 67
++sysfsgpio_srst_num 66
++
++reset_config trst_and_srst
