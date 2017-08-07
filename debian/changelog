@@ -1,3 +1,9 @@
+openocd (0.8.0-4tomaz-bbblack-3) unstable; urgency=medium
+
+  * Add sysfsgpio config for SNA-LGTC board.
+
+ -- Tomaž Šolc <tomaz.solc@tablix.org>  Mon, 07 Aug 2017 13:47:07 +0000
+
 openocd (0.8.0-4tomaz-bbblack-2) unstable; urgency=medium
 
   * Add systemd unit for exporting GPIO pins on boot.
