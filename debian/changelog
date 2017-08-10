@@ -1,3 +1,9 @@
+openocd (0.8.0-4tomaz-bbblack-4) unstable; urgency=medium
+
+  * Fix postinst script.
+
+ --  Tomaž Šolc <tomaz.solc@tablix.org>  Thu, 10 Aug 2017 12:58:56 +0000
+
 openocd (0.8.0-4tomaz-bbblack-3) unstable; urgency=medium
 
   * Add sysfsgpio config for SNA-LGTC board.
